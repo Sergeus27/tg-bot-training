@@ -10,6 +10,8 @@ func main() {
 	t := mustToken()
 
 }
+
+// достает флаг токена который по сути адрес на токен который лежит на компе
 func mustToken() string {
 	token := flag.String(
 		"token-bot-token",
