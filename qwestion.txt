@@ -1,0 +1,8 @@
+он говорил что приставку Get мы не пишем, почему?:
+https://youtu.be/RS3mH91ICCs?si=LiTMffM777vRF1hN&t=175
+
+будем отправлять запрос getUpdates а метод в коде у нас почему-то Updates называется
+https://youtu.be/RS3mH91ICCs?si=PqJ_hYX44gB01IOh&t=229
+
+что такое эти json теги, использую не первый раз нихера не понимаю  как работают
+https://youtu.be/RS3mH91ICCs?si=RAN4w-XCW-Haiqin&t=258
