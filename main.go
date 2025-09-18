@@ -6,22 +6,33 @@ import (
 	"log"
 )
 
-func main() {
-	t := mustToken()
+/*
+каркас проекта
+token = flags.Get(token)-это вроде бы готово
+tgClient = telegram.New(token)					//этот готов
+fetcher = fetcher.New(tgClient)					//эти на подходе
+processor = processor.New(tgClient)				//эти на подходе
+consumer.Start(fetcher, processor)
+*/
+const (
+	tgBotHost = "api.telegram.org"
+)
 
+func main() {
+	tgClient = telegram.New(tgBotHost, mustToken()) //новый раздел был разблокирован //tgBotHost="api.telegram.org"
 }
 
 // достает флаг токена который по сути адрес на токен который лежит на компе
 func mustToken() string {
-	token := flag.String(
-		"token-bot-token",
-		"",
-		"token for access to telegram bot",
+	token := flag.String( //туда сохраняется не само значение с ссылка на значение //и берется оно из флага хз как
+		"token-bot-token",                  //имя флага, во ввремя запуска программы надо указать его имя
+		"",                                 //дефолтное значение флага, если флаг не указан
+		"token for access to telegram bot", //подсказка к флагу, увидим после компиляции программы
 	)
 	flag.Parse()
 
 	if *token == "" {
-		log.Fatal("token is not specified")
+		log.Fatal("token is not specified") //вызываем панику и аварийно завершаем, программу если пустое значение в токене
 	}
 	return *token
 }
