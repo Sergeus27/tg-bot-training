@@ -21,7 +21,7 @@ consumer.Start(fetcher, processor)
 const (
 	tgBotHost   = "api.telegram.org"
 	storagePath = "storage"
-	batchSize = 100
+	batchSize   = 100
 )
 
 func main() {
@@ -32,8 +32,10 @@ func main() {
 	)
 
 	log.Print("server started")
-consumer:=event_consumer.New(eventsProcessor,eventsProcessor, batchSize)//в качестве Фетчера передаем eventsProcessor, в качестве процессора передаем eventsProcessor
-	if err:=
+	consumer := event_consumer.New(eventsProcessor, eventsProcessor, batchSize) //в качестве Фетчера передаем eventsProcessor, в качестве процессора передаем eventsProcessor
+	if err := consumer.Start(); err != nil {
+		log.Fatal() //напишет сообщение об ошибке и остановит программу
+	}
 }
 
 // достает флаг токена который по сути адрес на токен который лежит на компе
