@@ -19,8 +19,8 @@ const (
 	SendMessageMethod = "sendMessage"
 )
 
-func New(host string, token string) Client { //будет создавать клиентов
-	return Client{
+func New(host string, token string) *Client { //будет создавать клиентов
+	return &Client{
 		host:     host,
 		basePath: newBasePath(token),
 		client:   http.Client{}, //здесь уже нам изветные поля, только токен решили создавать отдельной функцией

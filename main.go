@@ -4,6 +4,10 @@ import (
 	"flag"
 	"fmt"
 	"log"
+
+	tgClient "tg-bot-training/clients/telegram" // чир за странная запись первый раз такое вижу
+	"tg-bot-training/events/telegram"
+	"tg-bot-training/storage/files"
 )
 
 /*
@@ -15,11 +19,21 @@ processor = processor.New(tgClient)				//эти на подходе
 consumer.Start(fetcher, processor)
 */
 const (
-	tgBotHost = "api.telegram.org"
+	tgBotHost   = "api.telegram.org"
+	storagePath = "storage"
+	batchSize = 100
 )
 
 func main() {
-	tgClient = telegram.New(tgBotHost, mustToken()) //новый раздел был разблокирован //tgBotHost="api.telegram.org"
+	//новый раздел был разблокирован //tgBotHost="api.telegram.org"
+	eventsProcessor := telegram.New(
+		tgClient.New(tgBotHost, mustToken()),
+		files.New(storagePath),
+	)
+
+	log.Print("server started")
+consumer:=event_consumer.New(eventsProcessor,eventsProcessor, batchSize)//в качестве Фетчера передаем eventsProcessor, в качестве процессора передаем eventsProcessor
+	if err:=
 }
 
 // достает флаг токена который по сути адрес на токен который лежит на компе
