@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"log"
 
-	tgClient "tg-bot-training/clients/telegram" // чир за странная запись первый раз такое вижу
+	tgClient "tg-bot-training/clients/telegram" // че за странная запись первый раз такое вижу
 	"tg-bot-training/events/telegram"
 	"tg-bot-training/storage/files"
 )
@@ -41,7 +41,7 @@ func main() {
 // достает флаг токена который по сути адрес на токен который лежит на компе
 func mustToken() string {
 	token := flag.String( //туда сохраняется не само значение с ссылка на значение //и берется оно из флага хз как
-		"token-bot-token",                  //имя флага, во ввремя запуска программы надо указать его имя
+		"tg-bot-token",                     //имя флага, во ввремя запуска программы надо указать его имя
 		"",                                 //дефолтное значение флага, если флаг не указан
 		"token for access to telegram bot", //подсказка к флагу, увидим после компиляции программы
 	)
