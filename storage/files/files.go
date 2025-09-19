@@ -2,9 +2,14 @@ package files
 
 import (
 	"encoding/gob"
+	"errors"
 	"fmt"
+	"math/rand"
 	"os"
 	"path/filepath"
+	"tg-bot-training/lib/e"
+	"tg-bot-training/storage"
+	"time"
 )
 
 type Storage struct {
@@ -49,7 +54,7 @@ func (s Storage) Save(page *storage.Page) (err error) {
 func (s Storage) PickRandom(userName string) (page *storage.Page, err error) {
 	defer func() { err = e.WrapIfErr("can't pick random", err) }()
 
-	fPath := filepath.Join(s.basePath, userName) //получаем путь до дирктории с файлами
+	path := filepath.Join(s.basePath, userName) //получаем путь до дирктории с файлами
 
 	files, err := os.ReadDir(path) //получаем список файлов
 
@@ -69,7 +74,7 @@ func (s Storage) PickRandom(userName string) (page *storage.Page, err error) {
 	return s.decodePage(filepath.Join(path, file.Name())) //в качестве результата возвращаем вызов этой функции
 }
 
-func (s Storage) Remove(p *Storage.Page) error { //метод Remove так же передается странице, все что он будет делать мы уже видели в прошлых методах
+func (s Storage) Remove(p *storage.Page) error { //метод Remove так же передается странице, все что он будет делать мы уже видели в прошлых методах
 	fileName, err := fileName(p)
 	if err != nil {
 		return e.Wrap("can't remove file", err)
@@ -90,7 +95,7 @@ func (s Storage) IsExist(p *storage.Page) (bool, error) { //метод пров�
 	path := filepath.Join(s.basePath, p.UserName, fileName)
 
 	switch _, err = os.Stat(path); { //возвращает множественные ошибки и только ненаход файла будет означать 0 ошибку
-	case error.Is(err, os.ErrNotExist): //ХЗ ЧЕ ТУТ С КЕЙСАМИ НАДО БУДЕТ РАЗОБРАТЬСЯ ПОЧЕМУ FALSE ЕСЛИ НЕ НАШЕЛ
+	case errors.Is(err, os.ErrNotExist): //ХЗ ЧЕ ТУТ С КЕЙСАМИ НАДО БУДЕТ РАЗОБРАТЬСЯ ПОЧЕМУ FALSE ЕСЛИ НЕ НАШЕЛ
 		return false, nil
 	case err != nil:
 		msg := fmt.Sprintf("can't check if file %s exists", path)
@@ -115,6 +120,6 @@ func (s Storage) decodePage(filePath string) (*storage.Page, error) { //оста
 	return &p, nil
 }
 
-func fileName(p *storagePage) (string, error) { //функция для определения имени //для того чтобы названия папок были уникальны используем хеш URL+Username
+func fileName(p *storage.Page) (string, error) { //функция для определения имени //для того чтобы названия папок были уникальны используем хеш URL+Username
 	return p.Hash() //в функции только 1 строка чтобы код был гибким
 }

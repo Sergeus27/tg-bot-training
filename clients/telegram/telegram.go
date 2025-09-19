@@ -2,10 +2,12 @@ package telegram //клиент будет общаться с телеграм�
 
 import (
 	"encoding/json"
-	"fmt"
+	"io"
 	"net/http"
 	"net/url"
+	"path"
 	"strconv"
+	"tg-bot-training/lib/e"
 )
 
 type Client struct {
@@ -59,6 +61,8 @@ func (c *Client) SendMessage(chatID int, text string) error { //метод дл�
 	if err != nil {
 		return e.Wrap("can't send message", err) //тут Wrap потому что ошибка не нулевая
 	}
+
+	return nil
 }
 
 func (c *Client) doRequest(method string, query url.Values) (data []byte, err error) { //отправляет запрос query это q, method

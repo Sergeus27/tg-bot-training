@@ -1,7 +1,8 @@
 package telegram
 
 import (
-	"tg-bot-training/client/telegram"
+	"errors"
+	"tg-bot-training/clients/telegram"
 	"tg-bot-training/events"
 	"tg-bot-training/lib/e"
 	"tg-bot-training/storage"
@@ -61,7 +62,7 @@ func (p *Processor) Process(event events.Event) error { //метод будет 
 	}
 }
 
-func (p *Processor) processMessage(event events.Event) {
+func (p *Processor) processMessage(event events.Event) error {
 	meta, err := meta(event)
 	if err != nil {
 		return e.Wrap("can't process message", err)
@@ -74,11 +75,13 @@ func (p *Processor) processMessage(event events.Event) {
 	return nil
 }
 
-func meta(event events.Event) {
-	res, ok := event.Meta(Meta) //для поля meta мы попытаемся сделать type assersion	 если здесь будет что-то другое то вторым параметром "ok" придется false
+func meta(event events.Event) (Meta, error) {
+	res, ok := event.Meta.(Meta) //для поля meta мы попытаемся сделать type assersion	 если здесь будет что-то другое то вторым параметром "ok" придется false
 	if !ok {
 		return Meta{}, e.Wrap("can't get meta", ErrUnknownMetaType)
 	}
+
+	return res, nil
 }
 
 func event(upd telegram.Update) events.Event { //функция для преобразования объектов в ивенты
@@ -86,7 +89,7 @@ func event(upd telegram.Update) events.Event { //функция для прео�
 
 	res := events.Event{
 		Type: updType,        //создаем 2 функции 1 получает из объекта тип...
-		Type: fetchText(upd), //...а другая текст
+		Text: fetchText(upd), //...а другая текст
 	}
 	if updType == events.Message {
 		res.Meta = Meta{

@@ -1,4 +1,4 @@
-package consumer
+package event_consumer
 
 import (
 	"log"

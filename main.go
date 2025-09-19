@@ -2,15 +2,16 @@ package main
 
 import (
 	"flag"
-	"fmt"
 	"log"
 
 	tgClient "tg-bot-training/clients/telegram" // че за странная запись первый раз такое вижу
+	"tg-bot-training/consumer/event-consumer"
 	"tg-bot-training/events/telegram"
 	"tg-bot-training/storage/files"
 )
 
 /*
+с
 каркас проекта
 token = flags.Get(token)-это вроде бы готово
 tgClient = telegram.New(token)					//этот готов
@@ -32,9 +33,10 @@ func main() {
 	)
 
 	log.Print("server started")
+
 	consumer := event_consumer.New(eventsProcessor, eventsProcessor, batchSize) //в качестве Фетчера передаем eventsProcessor, в качестве процессора передаем eventsProcessor
 	if err := consumer.Start(); err != nil {
-		log.Fatal() //напишет сообщение об ошибке и остановит программу
+		log.Fatal("service is stoped", err) //напишет сообщение об ошибке и остановит программу
 	}
 }
 
