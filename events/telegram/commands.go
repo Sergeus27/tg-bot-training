@@ -32,7 +32,7 @@ func (p *Processor) doCmd(text string, chatID int, username string) error { //о
 	case HelpCmd:
 		return p.sendHelp(chatID)
 	case StartCmd:
-		return p.sendHelp(chatID)
+		return p.sendHello(chatID)
 	default:
 		return p.tg.SendMessage(chatID, msgUnknownCommand)
 	}
