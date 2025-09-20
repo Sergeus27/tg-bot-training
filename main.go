@@ -1,13 +1,15 @@
 package main
 
 import (
+	"context"
 	"flag"
 	"log"
 
 	tgClient "tg-bot-training/clients/telegram" // че за странная запись первый раз такое вижу
 	"tg-bot-training/consumer/event-consumer"
+
 	"tg-bot-training/events/telegram"
-	"tg-bot-training/storage/files"
+	"tg-bot-training/storage/files/sqlite"
 )
 
 /*
@@ -20,16 +22,24 @@ processor = processor.New(tgClient)				//эти на подходе
 consumer.Start(fetcher, processor)
 */
 const (
-	tgBotHost   = "api.telegram.org"
-	storagePath = "storage"
-	batchSize   = 100
+	tgBotHost         = "api.telegram.org"
+	sqliteStoragePath = "data/sqlite/storage.db"
+	batchSize         = 100
 )
 
 func main() {
+	//s := files.New(storagePath)
+	s, err := sqlite.New(sqliteStoragePath)
+	if err != nil {
+		log.Fatal("can't connect to storage: %w", err)
+	}
+	if err := s.Init(context.TODO()); err != nil {
+		log.Fatal("can't init storage: %w", err)
+	}
 	//новый раздел был разблокирован //tgBotHost="api.telegram.org"
 	eventsProcessor := telegram.New(
 		tgClient.New(tgBotHost, mustToken()),
-		files.New(storagePath),
+		s,
 	)
 
 	log.Print("server started")

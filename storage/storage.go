@@ -1,5 +1,6 @@
 package storage //походу тут тоже все на интерфейсах будет
 import (
+	"context"
 	"crypto/sha1"
 	"errors"
 	"fmt"
@@ -9,10 +10,10 @@ import (
 
 type Storage interface {
 	//создаем методы
-	Save(p *Page) error                        //принимает страницу на вход чтобы сохранить //передаем страницу по ссылке так как тип может расширяться(помимо созранения ссылки бот сможет переходить по ним, сохранял превью или всю статью целиком например)
-	PickRandom(userName string) (*Page, error) //принимает имя пользователя возвращает рандомную страницу для него
-	Remove(p *Page) error
-	IsExist(p *Page) (bool, error) //сообщает существует ли такая страница
+	Save(ctx context.Context, p *Page) error                        //принимает страницу на вход чтобы сохранить //передаем страницу по ссылке так как тип может расширяться(помимо созранения ссылки бот сможет переходить по ним, сохранял превью или всю статью целиком например)
+	PickRandom(ctx context.Context, userName string) (*Page, error) //принимает имя пользователя возвращает рандомную страницу для него
+	Remove(ctx context.Context, p *Page) error
+	IsExist(ctx context.Context, p *Page) (bool, error) //сообщает существует ли такая страница
 }
 
 var ErrNoSavedPages = errors.New("no saved pages") //вынесли ошибку отдельно в переменную пакета чтобы ее можно было проверить снаружи//перенесли ошибку в storage из files, потому что она более общая
