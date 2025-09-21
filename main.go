@@ -21,6 +21,7 @@ fetcher = fetcher.New(tgClient)					//эти на подходе
 processor = processor.New(tgClient)				//эти на подходе
 consumer.Start(fetcher, processor)
 */
+
 const (
 	tgBotHost         = "api.telegram.org"
 	sqliteStoragePath = "data/sqlite/storage.db"
@@ -33,6 +34,7 @@ func main() {
 	if err != nil {
 		log.Fatal("can't connect to storage: %w", err)
 	}
+
 	if err := s.Init(context.TODO()); err != nil {
 		log.Fatal("can't init storage: %w", err)
 	}
